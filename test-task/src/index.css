@@ -1,22 +1,26 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
 
 .cell {
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  border: 1px solid red;
-  cursor:pointer;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid red;
+    cursor: pointer;
 }
 
 .battleField {
-  width: 220px;
-  display: flex;
-  flex-wrap: wrap;
-  transform: rotate(-90deg);
-  padding: 20px;
-  margin: 0 auto;
+    width: 220px;
+    display: flex;
+    flex-wrap: wrap;
+    transform: rotate(-90deg);
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.ship {
+    background-color: grey;
 }

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Cell from './cell';
 
-interface Ifield {
-	status: string;
-}
+// interface Ifield {
+// 	coordsArray: number[];
+// 	getRandomCoord():number;
+// 	isItemInArray(array:any, item:any):boolean;
+// }
 
-export default class BattleField extends React.Component<Ifield, {}> {
-	constructor(props: Ifield) {
+export default class BattleField extends React.Component<any, any> {
+	constructor(props: any) {
 		super(props);
 
 		this.handleClick = this.handleClick.bind(this);
@@ -14,10 +16,15 @@ export default class BattleField extends React.Component<Ifield, {}> {
 
 	public render() {
 		const cells: any[] = [];
-		for (let i = 1; i <= 10; i++) {
-			for (let j = 1; j <= 10; j++) {
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				let classes = "cell";
+				if (this.props.coordsArray && this.props.isItemInArray(this.props.coordsArray, [i, j])) {
+            		classes = classes + ' ship';
+         		}
 				cells.push(
 					<Cell
+						className={classes}
 						handleClick={this.handleClick}
 						key={i * 10 + j}
 						x={i}
