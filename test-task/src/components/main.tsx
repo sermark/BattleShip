@@ -1,27 +1,26 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../redux/actions';
 import BattleField from "./battleField";
 
-class Main extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      coordsArray: []
-    };
+interface IMainProps {
+  coordinates: number[][];
+  battleShip: any;
+  actions:any;
+}
 
-    this.initGame = this.initGame.bind(this);
-    this.getRandomCoord = this.getRandomCoord.bind(this);
+class Main extends React.Component<IMainProps, {}> {
+  constructor(props: IMainProps) {
+    super(props);
     this.isItemInArray = this.isItemInArray.bind(this);
   }
 
   public componentDidMount() {
-    this.initGame();
-  }
-
-  public initGame() {
     this.generateShips();
   }
 
-  public isItemInArray(array: number[], item: number[]): boolean {
+  public isItemInArray(array: number[][], item: number[]): boolean {
     if (typeof array === 'undefined') {
       return false;
     }
@@ -37,7 +36,7 @@ class Main extends React.Component<any, any> {
     return false;
   }
 
-  public isCorrectCoords(source: any, array: any) {
+  public isCorrectCoords(source: number[][], array: number[][]): boolean {
     for (const elemArray of array) {
       for (const elemSource of source) {
         const wrongX = elemArray[0] >= (elemSource[0] - 1) && elemArray[0] <= (elemSource[0] + 1);
@@ -50,9 +49,9 @@ class Main extends React.Component<any, any> {
     return true;
   }
 
-  public setUnavailableCells(unavailableArray: any, array: any) {
+  public setUnavailableCells(unavailableArray: number[][], array: number[][]): void {
     for (const elem of array) {
-      const item = elem;
+      const item: number[] = elem;
       for (let x = item[0] - 1; x <= item[0] + 1; x++) {
         for (let y = item[1] - 1; y <= item[1] + 1; y++) {
           if (x >= 0 && y >= 0 && !this.isItemInArray(unavailableArray, [x, y])) {
@@ -63,52 +62,77 @@ class Main extends React.Component<any, any> {
     }
   }
 
-  public generateShips() {
-    const unavailableCoords: any = [];
+  public generateShips(): void {
+    const unavailableCoords: number[][] = [];
     // generate L ship
-    const coordsArray = this.generateLShipCoords();
+    const coordsArray: number[][] = [];
+    const lShipCoords: number[][] = this.generateLShipCoords();
+    coordsArray.push(...lShipCoords);
     this.setUnavailableCells(unavailableCoords, coordsArray);
 
+    const lShip = {
+      coord: lShipCoords,
+      isSank: false,
+      name: 'Lship',
+    }
     // generate I ship
-    let iShipCoords = [];
+    let iShipCoords: number[][] = [];
 
     do {
       iShipCoords = this.generateIShipCoords();
     } while (!this.isCorrectCoords(coordsArray, iShipCoords));
 
+    const iShip = {
+      coord: iShipCoords,
+      isSank: false,
+      name: 'Iship',
+    }
+
     coordsArray.push(...iShipCoords);
     this.setUnavailableCells(unavailableCoords, iShipCoords);
 
     // generate dot ships
-    let dotShip1Coords = [];
+    let dotShip1Coords: number[] = [];
 
     do {
       dotShip1Coords = [this.getRandomCoord(), this.getRandomCoord()];
     } while (this.isItemInArray(unavailableCoords, dotShip1Coords));
 
+    const dotOneShip = {
+      coord: [dotShip1Coords],
+      isSank: false,
+      name: 'dotShip1',
+    }
+
     coordsArray.push(dotShip1Coords);
     this.setUnavailableCells(unavailableCoords, [dotShip1Coords]);
 
-    let dotShip2Coords = [];
+    let dotShip2Coords: number[] = [];
 
     do {
       dotShip2Coords = [this.getRandomCoord(), this.getRandomCoord()];
     } while (this.isItemInArray(unavailableCoords, dotShip2Coords));
 
-    coordsArray.push(dotShip2Coords);
+    const dotTwoShip = {
+      coord: [dotShip2Coords],
+      isSank: false,
+      name: 'dotShip2',
+    }
+    const ships:any = [];
+    ships.push(lShip, iShip, dotOneShip, dotTwoShip);
 
-    this.setState({
-      coordsArray
-    });
+    coordsArray.push(dotShip2Coords);
+    this.props.actions.fetchShips(ships);
+    this.props.actions.fetchCoordinates(coordsArray);
   }
 
-  public generateIShipCoords() {
-    const items = [];
-    const shipLength = 4;
-    const fieldLength = 10;
-    const x = this.getRandomCoord();
-    const y = this.getRandomCoord();
-    const orientation = this.getRandomShipOrientation();
+  public generateIShipCoords(): number[][] {
+    const items: number[][] = [];
+    const shipLength: number = 4;
+    const fieldLength: number = 10;
+    const x: number = this.getRandomCoord();
+    const y: number = this.getRandomCoord();
+    const orientation: string = this.getRandomShipOrientation();
     items.push([x, y]);
 
     if (orientation === 'vertical') {
@@ -136,13 +160,13 @@ class Main extends React.Component<any, any> {
     return items;
   }
 
-  public generateLShipCoords() {
-    const items = [];
-    const shipLength = 3;
-    const fieldLength = 10;
-    const x = this.getRandomCoord();
-    const y = this.getRandomCoord();
-    const orientation = this.getRandomShipOrientation();
+  public generateLShipCoords(): number[][] {
+    const items: number[][] = [];
+    const shipLength: number = 3;
+    const fieldLength: number = 10;
+    const x: number = this.getRandomCoord();
+    const y: number = this.getRandomCoord();
+    const orientation: string = this.getRandomShipOrientation();
     items.push([x, y]);
 
     if (orientation === 'vertical') {
@@ -190,7 +214,6 @@ class Main extends React.Component<any, any> {
         }
       }
     }
-
     return items;
   }
 
@@ -198,7 +221,7 @@ class Main extends React.Component<any, any> {
     return Math.floor(Math.random() * 10);
   }
 
-  public getRandomShipOrientation() {
+  public getRandomShipOrientation(): string {
     const options = ['vertical', 'horizontal'];
     return options[Math.floor(Math.random() * options.length)];
   }
@@ -206,10 +229,24 @@ class Main extends React.Component<any, any> {
   public render() {
     return (
       <div>
-        <BattleField coordsArray={this.state.coordsArray} isItemInArray={this.isItemInArray} />
+        <BattleField isItemInArray={this.isItemInArray} />
       </div>
     )
   }
 }
 
-export default Main;
+const mapStateToProps = (state:any) => {
+  const { coordinates, battleShip } = state;
+  return {
+    battleShip,
+    coordinates
+  };
+};
+
+const mapDispatchToProps = (dispatch:any) => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
