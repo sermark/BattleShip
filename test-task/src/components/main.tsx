@@ -1,59 +1,58 @@
 import * as React from 'react';
 import BattleField from "./battleField";
 
-class Main extends  React.Component<any, any> {
-	constructor(props:any) {
-		super(props);
-		this.state = {
-			coordsArray: []
-		};
+class Main extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      coordsArray: []
+    };
 
-		this.initGame = this.initGame.bind(this);
-		this.getRandomCoord = this.getRandomCoord.bind(this);
-		this.isItemInArray = this.isItemInArray.bind(this);
-	}
-	
-	public componentDidMount() {
-		this.initGame();
-	}
-
-  public initGame() {
-		this.generateShips();
+    this.initGame = this.initGame.bind(this);
+    this.getRandomCoord = this.getRandomCoord.bind(this);
+    this.isItemInArray = this.isItemInArray.bind(this);
   }
 
-/* tslint:disable:prefer-for-of */
-	public isItemInArray(array:any, item:any):boolean {
-		if ( typeof array === 'undefined') {
-			return false;
-		}
+  public componentDidMount() {
+    this.initGame();
+  }
 
-		if ( array.length === 0) {
-			return false;
-		}
-		for (let i = 0; i < array.length; i++) {
-			if (array[i][0] === item[0] && array[i][1] === item[1]) {
-			return true;
-			}
-		}
-		return false;
-	}
-	
-	public isCorrectCoords(source:any, array:any) {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < source.length; j++) {
-        const wrongX = array[i][0] >= (source[j][0] - 1) && array[i][0] <= (source[j][0] + 1);
-        const wrongY = array[i][1] >= (source[j][1] - 1) && array[i][1] <= (source[j][1] + 1);
+  public initGame() {
+    this.generateShips();
+  }
+
+  public isItemInArray(array: number[], item: number[]): boolean {
+    if (typeof array === 'undefined') {
+      return false;
+    }
+
+    if (array.length === 0) {
+      return false;
+    }
+    for (const elem of array) {
+      if (elem[0] === item[0] && elem[1] === item[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public isCorrectCoords(source: any, array: any) {
+    for (const elemArray of array) {
+      for (const elemSource of source) {
+        const wrongX = elemArray[0] >= (elemSource[0] - 1) && elemArray[0] <= (elemSource[0] + 1);
+        const wrongY = elemArray[1] >= (elemSource[1] - 1) && elemArray[1] <= (elemSource[1] + 1);
         if (wrongX || wrongY) {
           return false;
         }
       }
     }
     return true;
-	}
-	
-	public setUnavailableCells(unavailableArray:any, array:any) {
-    for (let i = 0; i < array.length; i++) {
-      const item = array[i];
+  }
+
+  public setUnavailableCells(unavailableArray: any, array: any) {
+    for (const elem of array) {
+      const item = elem;
       for (let x = item[0] - 1; x <= item[0] + 1; x++) {
         for (let y = item[1] - 1; y <= item[1] + 1; y++) {
           if (x >= 0 && y >= 0 && !this.isItemInArray(unavailableArray, [x, y])) {
@@ -62,10 +61,10 @@ class Main extends  React.Component<any, any> {
         }
       }
     }
-	}
-	
-	public generateShips() {
-    const unavailableCoords:any = [];
+  }
+
+  public generateShips() {
+    const unavailableCoords: any = [];
     // generate L ship
     const coordsArray = this.generateLShipCoords();
     this.setUnavailableCells(unavailableCoords, coordsArray);
@@ -96,14 +95,14 @@ class Main extends  React.Component<any, any> {
       dotShip2Coords = [this.getRandomCoord(), this.getRandomCoord()];
     } while (this.isItemInArray(unavailableCoords, dotShip2Coords));
 
-		coordsArray.push(dotShip2Coords);
-		
-		this.setState({
-			coordsArray
-		});
-	}
-	
-	public generateIShipCoords() {
+    coordsArray.push(dotShip2Coords);
+
+    this.setState({
+      coordsArray
+    });
+  }
+
+  public generateIShipCoords() {
     const items = [];
     const shipLength = 4;
     const fieldLength = 10;
@@ -135,9 +134,9 @@ class Main extends  React.Component<any, any> {
     }
 
     return items;
-	}
-	
-	public generateLShipCoords() {
+  }
+
+  public generateLShipCoords() {
     const items = [];
     const shipLength = 3;
     const fieldLength = 10;
@@ -193,25 +192,24 @@ class Main extends  React.Component<any, any> {
     }
 
     return items;
-	}
-	
-	public getRandomCoord():number {
+  }
+
+  public getRandomCoord(): number {
     return Math.floor(Math.random() * 10);
   }
 
   public getRandomShipOrientation() {
     const options = ['vertical', 'horizontal'];
     return options[Math.floor(Math.random() * options.length)];
-	}
-	
-	public render() {
-		return (
-			<div>
-				{/* <BattleField /> */}
-				  <BattleField coordsArray={this.state.coordsArray} isItemInArray={this.isItemInArray}/>  
-			</div>
-		)
-	}
+  }
+
+  public render() {
+    return (
+      <div>
+        <BattleField coordsArray={this.state.coordsArray} isItemInArray={this.isItemInArray} />
+      </div>
+    )
+  }
 }
 
 export default Main;
