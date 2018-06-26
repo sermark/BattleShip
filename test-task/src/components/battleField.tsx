@@ -2,13 +2,15 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../redux/actions';
+import * as selectors from '../redux/selectors';
 import Cell from './cell';
 
 interface IBattleField {
 	coordinates: number[][];
+	coordinatesSank: number[][];
 	actions: any;
 	battleShip: any;
-	battleShipSank: any;
+	clickedField: any;
 	isItemInArray(array: number[][], item: number[]): boolean;
 }
 
@@ -20,20 +22,23 @@ class BattleField extends React.Component<IBattleField, {}> {
 	}
 
 	public render() {
-		const newCoord = [];
-		newCoord.push(
-			this.props.battleShipSank.map((elem: any) => elem.coord)
-		);
-		const res:any = [];
-		newCoord.map((elem:any) => res.push(elem));
-		// console.log(res);
 		const cells: JSX.Element[] = [];
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
 				let classes = "cell";
+
 				if (this.props.coordinates && this.props.isItemInArray(this.props.coordinates, [i, j])) {
 					classes = classes + ' ship';
 				}
+
+				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j]) && this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+					classes = classes + ' missed';
+				}
+
+				if (this.props.coordinatesSank && this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+					classes = classes + ' defeated';
+				}
+
 				cells.push(
 					<Cell
 						className={classes}
@@ -54,32 +59,33 @@ class BattleField extends React.Component<IBattleField, {}> {
 
 	private handleClick(x: number, y: number): void {
 		const cellCoordanate = [x, y];
+		this.props.actions.clickField(cellCoordanate);
 		const { battleShip } = this.props;
 		const checkArea = (arr: number[], elem: any) => {
 			if (arr.every((v: number, i: number) => v === cellCoordanate[i])) {
 				const elemSank = {
 					coord: elem.coord,
-					isSank: !elem.isSank,
+					isSank: true,
 					name: elem.name,
 				}
 				this.props.actions.updateShips(elemSank);
-				this.props.actions.fetchCoordinatesSank(elem.coord);
 			}
 		}
 		battleShip.map((elem: any) => {
-				elem.coord.map((e: any) => {
-					checkArea(e, elem);
-				})
+			elem.coord.map((e: any) => {
+				checkArea(e, elem);
+			})
 		});
 	}
 }
 
 const mapStateToProps = (state: any) => {
-	const { coordinates, battleShip, battleShipSank } = state;
+	const { battleShip, clickedField } = state;
 	return {
 		battleShip,
-		battleShipSank,
-		coordinates,
+		clickedField,
+		coordinates: selectors.getCoordinates(battleShip),
+		coordinatesSank: selectors.getCoordinatesSank(battleShip)
 	};
 };
 

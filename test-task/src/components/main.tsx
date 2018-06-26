@@ -5,9 +5,8 @@ import * as actions from '../redux/actions';
 import BattleField from "./battleField";
 
 interface IMainProps {
-  coordinates: number[][];
   battleShip: any;
-  actions:any;
+  actions: any;
 }
 
 class Main extends React.Component<IMainProps, {}> {
@@ -67,14 +66,16 @@ class Main extends React.Component<IMainProps, {}> {
     // generate L ship
     const coordsArray: number[][] = [];
     const lShipCoords: number[][] = this.generateLShipCoords();
-    coordsArray.push(...lShipCoords);
-    this.setUnavailableCells(unavailableCoords, coordsArray);
 
     const lShip = {
       coord: lShipCoords,
       isSank: false,
       name: 'Lship',
     }
+
+    coordsArray.push(...lShip.coord);
+    this.setUnavailableCells(unavailableCoords, coordsArray);
+
     // generate I ship
     let iShipCoords: number[][] = [];
 
@@ -88,7 +89,7 @@ class Main extends React.Component<IMainProps, {}> {
       name: 'Iship',
     }
 
-    coordsArray.push(...iShipCoords);
+    coordsArray.push(...iShip.coord);
     this.setUnavailableCells(unavailableCoords, iShipCoords);
 
     // generate dot ships
@@ -104,7 +105,7 @@ class Main extends React.Component<IMainProps, {}> {
       name: 'dotShip1',
     }
 
-    coordsArray.push(dotShip1Coords);
+    coordsArray.push(...dotOneShip.coord);
     this.setUnavailableCells(unavailableCoords, [dotShip1Coords]);
 
     let dotShip2Coords: number[] = [];
@@ -118,12 +119,13 @@ class Main extends React.Component<IMainProps, {}> {
       isSank: false,
       name: 'dotShip2',
     }
-    const ships:any = [];
+
+    coordsArray.push(...dotTwoShip.coord);
+
+    const ships: any = [];
     ships.push(lShip, iShip, dotOneShip, dotTwoShip);
 
-    coordsArray.push(dotShip2Coords);
     this.props.actions.fetchShips(ships);
-    this.props.actions.fetchCoordinates(coordsArray);
   }
 
   public generateIShipCoords(): number[][] {
@@ -227,23 +229,27 @@ class Main extends React.Component<IMainProps, {}> {
   }
 
   public render() {
+    const { battleShip } = this.props;
+    const isSankAll = battleShip.every((elem:any) => elem.isSank)
     return (
       <div>
         <BattleField isItemInArray={this.isItemInArray} />
+        <div>
+          {isSankAll?<p>Game Over</p>:null}
+        </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state:any) => {
-  const { coordinates, battleShip } = state;
+const mapStateToProps = (state: any) => {
+  const { battleShip } = state;
   return {
-    battleShip,
-    coordinates
+    battleShip
   };
 };
 
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
     actions: bindActionCreators(actions, dispatch)
   };

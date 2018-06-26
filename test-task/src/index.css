@@ -24,3 +24,11 @@ body {
 .ship {
     background-color: grey;
 }
+
+.missed {
+    background-color: green;
+}
+
+.defeated {
+    background-color: black;
+}
