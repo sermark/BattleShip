@@ -31,7 +31,8 @@ class BattleField extends React.Component<IBattleField, {}> {
 					classes = classes + ' ship';
 				}
 
-				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j]) && this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j])
+						&& this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
 					classes = classes + ' missed';
 				}
 

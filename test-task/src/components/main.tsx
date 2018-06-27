@@ -2,7 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../redux/actions';
-import BattleField from "./battleField";
+import BattleField from './battleField';
+import Message from './message';
 
 interface IMainProps {
   battleShip: any;
@@ -63,7 +64,7 @@ class Main extends React.Component<IMainProps, {}> {
 
   public generateShips(): void {
     const unavailableCoords: number[][] = [];
-    // generate L ship
+    // create L-shaped ship.
     const coordsArray: number[][] = [];
     const lShipCoords: number[][] = this.generateLShipCoords();
 
@@ -76,7 +77,7 @@ class Main extends React.Component<IMainProps, {}> {
     coordsArray.push(...lShip.coord);
     this.setUnavailableCells(unavailableCoords, coordsArray);
 
-    // generate I ship
+    // create I-shaped ship.
     let iShipCoords: number[][] = [];
 
     do {
@@ -92,7 +93,7 @@ class Main extends React.Component<IMainProps, {}> {
     coordsArray.push(...iShip.coord);
     this.setUnavailableCells(unavailableCoords, iShipCoords);
 
-    // generate dot ships
+    // create dot ships.
     let dotShip1Coords: number[] = [];
 
     do {
@@ -230,13 +231,11 @@ class Main extends React.Component<IMainProps, {}> {
 
   public render() {
     const { battleShip } = this.props;
-    const isSankAll = battleShip.every((elem:any) => elem.isSank)
+    const isSankAll = battleShip.every((elem: any) => elem.isSank)
     return (
       <div>
         <BattleField isItemInArray={this.isItemInArray} />
-        <div>
-          {isSankAll?<p>Game Over</p>:null}
-        </div>
+        {isSankAll ? <Message text={'Game Over'} /> : null}
       </div>
     )
   }
