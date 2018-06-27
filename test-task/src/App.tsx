@@ -1,13 +1,17 @@
 import * as React from 'react';
+import { Provider } from 'react-redux';
 import './App.css';
-import BattleShip from './components/battleField';
+import Main from './components/main';
+import configureStore from './redux/configureStore';
 
-// import logo from './logo.svg';
+const store = configureStore();
 
 class App extends React.Component {
   public render() {
     return (
-      <BattleShip status='field' />
+      <Provider store={store}>
+        <Main />
+      </Provider>
     );
   }
 }

@@ -1,22 +1,91 @@
+html, body {
+    height: 100%;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cell {
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  border: 1px solid red;
-  cursor:pointer;
+    list-style: none;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transition: all ease 0.5s;
+    position: relative;
+    background-color: #e2e2e2;
+    opacity: 1;
+}
+
+.cell:hover {
+    opacity: 0.5;
 }
 
 .battleField {
-  width: 220px;
-  display: flex;
-  flex-wrap: wrap;
-  transform: rotate(-90deg);
-  padding: 20px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.ship {
+    background-color: #4b6fb1;
+}
+
+.missed {
+    background-color: #beddf3;
+}
+
+.defeated {
+    background-color: #943434;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    color: white;
+    font-size: 3rem;
+}
+
+.button {
+    padding: 10px 30px;
+    border: 2px solid #ccc;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+}
+
+@media (max-width: 480px) {
+    .cell {
+        width: 25px;
+        height: 25px;
+    }
+
+    .battleField {
+        max-width: 290px;
+    }
 }
