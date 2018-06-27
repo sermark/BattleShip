@@ -252,7 +252,7 @@ class Main extends React.Component<IMainProps, IMainState> {
       <div>
         <BattleField isItemInArray={this.isItemInArray} isVisible={isVisible}/>
         {isSankAll ? <Message text={'Game Over'} /> : null}
-        <button  className={'button'} onClick={this.handleToogleVisability}>Toogle Visability</button>
+        <button  className={'button'} onClick={this.handleToogleVisability}>Toggle Visibility</button>
       </div>
     )
   }
