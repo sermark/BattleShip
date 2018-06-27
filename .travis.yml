@@ -7,7 +7,7 @@ script:
 
 deploy:
   provider: pages
-  local_dir: "test-tast/build"
+  local_dir: "./build"
   skip_cleanup: true
   github_token: $GITHUB_PAGES
   on:
