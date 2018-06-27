@@ -1,36 +1,55 @@
+html, body {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
 }
 
+#root {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .cell {
     list-style: none;
     width: 40px;
     height: 40px;
-    border: 0.5px solid red;
+    border: 2px solid #fff;
     cursor: pointer;
+    transition: all ease 0.5s;
+    position: relative;
+    background-color: #e2e2e2;
+    opacity: 1;
+}
+
+.cell:hover {
+    opacity: 0.5;
 }
 
 .battleField {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     display: flex;
     flex-wrap: wrap;
-    padding: 20px;
+    padding: 0;
     margin: 0 auto;
 }
 
 .ship {
-    background-color: grey;
+    background-color: #4b6fb1;
 }
 
 .missed {
-    background-color: green;
+    background-color: #beddf3;
 }
 
 .defeated {
-    background-color: black;
+    background-color: #943434;
 }
 
 .modal {
@@ -48,4 +67,25 @@ body {
 .text {
     color: white;
     font-size: 3rem;
+}
+
+.button {
+    padding: 10px 30px;
+    border: 2px solid #ccc;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+}
+
+@media (max-width: 480px) {
+    .cell {
+        width: 25px;
+        height: 25px;
+    }
+
+    .battleField {
+        max-width: 290px;
+    }
 }

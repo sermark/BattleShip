@@ -10,14 +10,29 @@ interface IMainProps {
   actions: any;
 }
 
-class Main extends React.Component<IMainProps, {}> {
+interface IMainState {
+  isVisible: boolean;
+}
+
+class Main extends React.Component<IMainProps, IMainState> {
   constructor(props: IMainProps) {
     super(props);
     this.isItemInArray = this.isItemInArray.bind(this);
+    this.handleToogleVisability = this.handleToogleVisability.bind(this);
+
+    this.state = {
+      isVisible: false
+    }
   }
 
   public componentDidMount() {
     this.generateShips();
+  }
+
+  public handleToogleVisability(): void {
+    this.setState({
+      isVisible: !this.state.isVisible
+    });
   }
 
   public isItemInArray(array: number[][], item: number[]): boolean {
@@ -230,12 +245,14 @@ class Main extends React.Component<IMainProps, {}> {
   }
 
   public render() {
+    const { isVisible } = this.state;
     const { battleShip } = this.props;
     const isSankAll = battleShip.every((elem: any) => elem.isSank)
     return (
       <div>
-        <BattleField isItemInArray={this.isItemInArray} />
+        <BattleField isItemInArray={this.isItemInArray} isVisible={isVisible}/>
         {isSankAll ? <Message text={'Game Over'} /> : null}
+        <button  className={'button'} onClick={this.handleToogleVisability}>Toogle Visability</button>
       </div>
     )
   }

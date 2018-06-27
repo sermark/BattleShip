@@ -10,7 +10,8 @@ interface IBattleField {
 	coordinatesSank: number[][];
 	actions: any;
 	battleShip: any;
-	clickedField: any;
+	clickedField: number[][];
+	isVisible:boolean;
 	isItemInArray(array: number[][], item: number[]): boolean;
 }
 
@@ -28,7 +29,12 @@ class BattleField extends React.Component<IBattleField, {}> {
 				let classes = "cell";
 
 				if (this.props.coordinates && this.props.isItemInArray(this.props.coordinates, [i, j])) {
-					classes = classes + ' ship';
+					if (this.props.isVisible) {
+						classes = classes + ' ship';
+					} else {
+						classes = classes;
+					}
+					
 				}
 
 				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j])
