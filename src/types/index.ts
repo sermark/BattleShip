@@ -1,3 +1,5 @@
+import { Action } from 'redux';
+
 export interface IbattleShip {
 	coord: number[][],
 	isSank: boolean,
@@ -40,12 +42,10 @@ export interface IMessageProps {
 	text: string;
 }
 
-export interface IAction {
+export interface IAction extends Action{
 	payload: IbattleShip;
-	type?: string
 }
 
-export interface IActionClickedField {
+export interface IActionClickedField extends Action{
 	payload: number[];
-	type: string
 }

@@ -88,7 +88,7 @@ const mapStateToProps = (state: IStoreState) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		actions: bindActionCreators(actions, dispatch)
 	};

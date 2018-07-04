@@ -1,13 +1,13 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import { IAction, IActionClickedField, IbattleShip } from '../../types/index';
-import constants from '../utils/constants';
+import { actionTypes } from '../utils/constants';
 
-const battleShip = (state: IbattleShip[] = [], action: IAction):(IbattleShip[] | IbattleShip) => {
+const battleShip: Reducer<{}> = (state: IbattleShip[] = [], action: IAction) => {
 	let result: IbattleShip[];
 	switch (action.type) {
-		case constants.FETCH_SHIPS:
+		case actionTypes.FETCH_SHIPS:
 			return action.payload;
-		case constants.UPDATE_SHIPS:
+		case actionTypes.UPDATE_SHIPS:
 			if (state.find(item => item.name === action.payload.name)) {
 				result = state.map((item) => {
 					return item.name === action.payload.name ? action.payload : item;
@@ -21,10 +21,10 @@ const battleShip = (state: IbattleShip[] = [], action: IAction):(IbattleShip[] |
 	}
 };
 
-const clickedField = (state:number[][] = [], action:IActionClickedField):number[][] => {
-	let result:number[][] = [];
+const clickedField: Reducer<number[][]> = (state: number[][] = [], action: IActionClickedField) => {
+	let result: number[][] = [];
 	switch (action.type) {
-		case constants.CLICKED_FIELD:
+		case actionTypes.CLICKED_FIELD:
 			return result = [...state, action.payload];
 		default:
 			return state;

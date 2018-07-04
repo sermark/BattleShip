@@ -1,23 +1,24 @@
-import { IbattleShip } from '../../types/index';
-import constants from '../utils/constants';
+import { IAction, IActionClickedField } from '../../types/index';
+import { actionTypes } from '../utils/constants';
 
-export const fetchShips = (payload: IbattleShip[]) => {
+
+export const fetchShips = (payload: IAction[]) => {
   return {
     payload,
-    type: constants.FETCH_SHIPS,
+    type: actionTypes.FETCH_SHIPS,
   };
 };
 
-export const updateShips = (payload: IbattleShip) => {
+export const updateShips = (payload: IAction) => {
   return {
     payload,
-    type: constants.UPDATE_SHIPS,
+    type: actionTypes.UPDATE_SHIPS,
   };
 };
 
-export const clickField = (payload: number[][]) => {
+export const clickField = (payload: IActionClickedField[]) => {
   return {
     payload,
-    type: constants.CLICKED_FIELD,
+    type: actionTypes.CLICKED_FIELD,
   };
 };
