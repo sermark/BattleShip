@@ -1,10 +1,7 @@
 import * as React from 'react';
+import { IMessageProps } from '../types/index';
 
-interface IMessageProps {
-	text: string;
-}
-
-const Message = ({ text }: IMessageProps) => (
+const Message = ({ text }: IMessageProps): JSX.Element => (
 	<div className={'modal'}>
 		<p className={'text'}>
 			{text}

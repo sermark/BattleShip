@@ -3,17 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../redux/actions';
 import * as selectors from '../redux/selectors';
+import { IBattleField, IbattleShip, IStoreState, } from '../types/index';
 import Cell from './cell';
 
-interface IBattleField {
-	coordinates: number[][];
-	coordinatesSank: number[][];
-	actions: any;
-	battleShip: any;
-	clickedField: number[][];
-	isVisible:boolean;
-	isItemInArray(array: number[][], item: number[]): boolean;
-}
 
 class BattleField extends React.Component<IBattleField, {}> {
 	constructor(props: IBattleField) {
@@ -26,7 +18,7 @@ class BattleField extends React.Component<IBattleField, {}> {
 		const cells: JSX.Element[] = [];
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
-				let classes = "cell";
+				let classes: string = "cell";
 
 				if (this.props.coordinates && this.props.isItemInArray(this.props.coordinates, [i, j])) {
 					if (this.props.isVisible) {
@@ -34,11 +26,11 @@ class BattleField extends React.Component<IBattleField, {}> {
 					} else {
 						classes = classes;
 					}
-					
+
 				}
 
 				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j])
-						&& this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+					&& this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
 					classes = classes + ' missed';
 				}
 
@@ -64,13 +56,13 @@ class BattleField extends React.Component<IBattleField, {}> {
 		)
 	}
 
-	private handleClick(x: number, y: number): void {
-		const cellCoordanate = [x, y];
+	private handleClick(event: React.MouseEvent<{}>, x: number, y: number): void {
+		const cellCoordanate: number[] = [x, y];
 		this.props.actions.clickField(cellCoordanate);
 		const { battleShip } = this.props;
-		const checkArea = (arr: number[], elem: any) => {
+		const checkArea = (arr: number[], elem: IbattleShip) => {
 			if (arr.every((v: number, i: number) => v === cellCoordanate[i])) {
-				const elemSank = {
+				const elemSank: IbattleShip = {
 					coord: elem.coord,
 					isSank: true,
 					name: elem.name,
@@ -78,15 +70,15 @@ class BattleField extends React.Component<IBattleField, {}> {
 				this.props.actions.updateShips(elemSank);
 			}
 		}
-		battleShip.map((elem: any) => {
-			elem.coord.map((e: any) => {
+		battleShip.map((elem: IbattleShip) => {
+			elem.coord.map((e: number[]) => {
 				checkArea(e, elem);
 			})
 		});
 	}
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IStoreState) => {
 	const { battleShip, clickedField } = state;
 	return {
 		battleShip,

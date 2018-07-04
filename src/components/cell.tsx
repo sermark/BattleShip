@@ -1,14 +1,8 @@
 import * as React from 'react';
+import { ICellProps } from '../types/index';
 
-interface ICellProps {
-    x: number;
-    y: number;
-    className: string;
-    handleClick(x:number, y:number): void;
-}
-
-const Cell = ({ x, y, handleClick, className }: ICellProps) => (
-    <li className={className} onClick={() => handleClick(x, y)} />
+const Cell = ({ x, y, handleClick, className }: ICellProps): JSX.Element => (
+	<li className={className} onClick={(event) => handleClick(event, x, y)} />
 );
 
 export default Cell;

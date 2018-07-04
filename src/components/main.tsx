@@ -2,17 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../redux/actions';
+import { IbattleShip, IMainProps, IMainState, IStoreState, } from '../types/index';
 import BattleField from './battleField';
 import Message from './message';
-
-interface IMainProps {
-  battleShip: any;
-  actions: any;
-}
-
-interface IMainState {
-  isVisible: boolean;
-}
 
 class Main extends React.Component<IMainProps, IMainState> {
   constructor(props: IMainProps) {
@@ -25,7 +17,7 @@ class Main extends React.Component<IMainProps, IMainState> {
     }
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     this.generateShips();
   }
 
@@ -83,7 +75,7 @@ class Main extends React.Component<IMainProps, IMainState> {
     const coordsArray: number[][] = [];
     const lShipCoords: number[][] = this.generateLShipCoords();
 
-    const lShip = {
+    const lShip: IbattleShip = {
       coord: lShipCoords,
       isSank: false,
       name: 'Lship',
@@ -99,7 +91,7 @@ class Main extends React.Component<IMainProps, IMainState> {
       iShipCoords = this.generateIShipCoords();
     } while (!this.isCorrectCoords(coordsArray, iShipCoords));
 
-    const iShip = {
+    const iShip: IbattleShip = {
       coord: iShipCoords,
       isSank: false,
       name: 'Iship',
@@ -115,7 +107,7 @@ class Main extends React.Component<IMainProps, IMainState> {
       dotShip1Coords = [this.getRandomCoord(), this.getRandomCoord()];
     } while (this.isItemInArray(unavailableCoords, dotShip1Coords));
 
-    const dotOneShip = {
+    const dotOneShip: IbattleShip = {
       coord: [dotShip1Coords],
       isSank: false,
       name: 'dotShip1',
@@ -130,7 +122,7 @@ class Main extends React.Component<IMainProps, IMainState> {
       dotShip2Coords = [this.getRandomCoord(), this.getRandomCoord()];
     } while (this.isItemInArray(unavailableCoords, dotShip2Coords));
 
-    const dotTwoShip = {
+    const dotTwoShip: IbattleShip = {
       coord: [dotShip2Coords],
       isSank: false,
       name: 'dotShip2',
@@ -138,7 +130,7 @@ class Main extends React.Component<IMainProps, IMainState> {
 
     coordsArray.push(...dotTwoShip.coord);
 
-    const ships: any = [];
+    const ships: IbattleShip[] = [];
     ships.push(lShip, iShip, dotOneShip, dotTwoShip);
 
     this.props.actions.fetchShips(ships);
@@ -247,18 +239,18 @@ class Main extends React.Component<IMainProps, IMainState> {
   public render() {
     const { isVisible } = this.state;
     const { battleShip } = this.props;
-    const isSankAll = battleShip.every((elem: any) => elem.isSank)
+    const isSankAll: boolean = battleShip.every(({ isSank }) => isSank)
     return (
       <div>
-        <BattleField isItemInArray={this.isItemInArray} isVisible={isVisible}/>
+        <BattleField isItemInArray={this.isItemInArray} isVisible={isVisible} />
         {isSankAll ? <Message text={'Game Over'} /> : null}
-        <button  className={'button'} onClick={this.handleToogleVisability}>Toggle Visibility</button>
+        <button className={'button'} onClick={this.handleToogleVisability}>Toggle Visibility</button>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IStoreState) => {
   const { battleShip } = state;
   return {
     battleShip

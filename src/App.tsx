@@ -3,17 +3,16 @@ import { Provider } from 'react-redux';
 import './App.css';
 import Main from './components/main';
 import configureStore from './redux/configureStore';
+// import { IStoreState } from './types/index';
 
 const store = configureStore();
 
-class App extends React.Component {
-  public render() {
-    return (
-      <Provider store={store}>
-        <Main />
-      </Provider>
-    );
-  }
+const App: React.StatelessComponent<{}> = () => {
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 }
 
 export default App;

@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
+import { IAction, IActionClickedField, IbattleShip } from '../../types/index';
 import constants from '../utils/constants';
 
-const battleShip = (state = [], action) => {
-	let result = null;
+const battleShip = (state: IbattleShip[] = [], action: IAction):(IbattleShip[] | IbattleShip) => {
+	let result: IbattleShip[];
 	switch (action.type) {
 		case constants.FETCH_SHIPS:
 			return action.payload;
@@ -20,8 +21,8 @@ const battleShip = (state = [], action) => {
 	}
 };
 
-const clickedField = (state = [], action) => {
-	let result = [];
+const clickedField = (state:number[][] = [], action:IActionClickedField):number[][] => {
+	let result:number[][] = [];
 	switch (action.type) {
 		case constants.CLICKED_FIELD:
 			return result = [...state, action.payload];
