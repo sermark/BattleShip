@@ -20,7 +20,6 @@ export interface IBattleField {
 	battleShip: IbattleShip[];
 	clickedField: number[][];
 	isVisible: boolean;
-	isItemInArray: (array: number[][], item: number[]) => boolean;
 }
 
 export interface IStoreState {

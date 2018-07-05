@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { isItemInArray } from '../services/index';
 import { IBattleField, IbattleShip } from '../types/index';
 import Cell from './cell';
-
 
 export default class BattleField extends React.Component<IBattleField, {}> {
 	constructor(props: IBattleField) {
@@ -11,26 +11,25 @@ export default class BattleField extends React.Component<IBattleField, {}> {
 	}
 
 	public render() {
+		const { coordinates, coordinatesSank, clickedField } = this.props;
 		const cells: JSX.Element[] = [];
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
 				let classes: string = "cell";
 
-				if (this.props.coordinates && this.props.isItemInArray(this.props.coordinates, [i, j])) {
+				if (coordinates && isItemInArray(coordinates, [i, j])) {
 					if (this.props.isVisible) {
 						classes = classes + ' ship';
 					} else {
 						classes = classes;
 					}
-
 				}
 
-				if (this.props.clickedField && this.props.isItemInArray(this.props.clickedField, [i, j])
-					&& this.props.coordinatesSank && !this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+				if (clickedField && isItemInArray(clickedField, [i, j]) && coordinatesSank && !isItemInArray(coordinatesSank, [i, j])) {
 					classes = classes + ' missed';
 				}
 
-				if (this.props.coordinatesSank && this.props.isItemInArray(this.props.coordinatesSank, [i, j])) {
+				if (coordinatesSank && isItemInArray(coordinatesSank, [i, j])) {
 					classes = classes + ' defeated';
 				}
 
@@ -53,17 +52,17 @@ export default class BattleField extends React.Component<IBattleField, {}> {
 	}
 
 	private handleClick(event: React.MouseEvent<{}>, x: number, y: number): void {
+		const { actions, battleShip } = this.props;
 		const cellCoordanate: number[] = [x, y];
-		this.props.actions.clickField(cellCoordanate);
-		const { battleShip } = this.props;
-		const checkArea = (arr: number[], elem: IbattleShip) => {
+		actions.clickField(cellCoordanate);
+		const checkArea = (arr: number[], elem: IbattleShip): void => {
 			if (arr.every((v: number, i: number) => v === cellCoordanate[i])) {
 				const elemSank: IbattleShip = {
 					coord: elem.coord,
 					isSank: true,
 					name: elem.name,
 				}
-				this.props.actions.updateShips(elemSank);
+				actions.updateShips(elemSank);
 			}
 		}
 		battleShip.map((elem: IbattleShip) => {
