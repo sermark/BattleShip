@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-import * as actions from '../redux/actions';
-import { IbattleShip, IMainProps, IMainState, IStoreState, } from '../types/index';
-import BattleField from './battleField';
+import BattleField from '../containers/containerBattleField';
+import { IbattleShip, IMainProps, IMainState } from '../types/index';
 import Message from './message';
 
-class Main extends React.Component<IMainProps, IMainState> {
+export default class Main extends React.Component<IMainProps, IMainState> {
 	constructor(props: IMainProps) {
 		super(props);
 		this.isItemInArray = this.isItemInArray.bind(this);
@@ -249,18 +246,3 @@ class Main extends React.Component<IMainProps, IMainState> {
 		)
 	}
 }
-
-const mapStateToProps = (state: IStoreState) => {
-	const { battleShip } = state;
-	return {
-		battleShip
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		actions: bindActionCreators(actions, dispatch)
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);

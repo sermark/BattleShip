@@ -1,13 +1,9 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-import * as actions from '../redux/actions';
-import * as selectors from '../redux/selectors';
-import { IBattleField, IbattleShip, IStoreState, } from '../types/index';
+import { IBattleField, IbattleShip } from '../types/index';
 import Cell from './cell';
 
 
-class BattleField extends React.Component<IBattleField, {}> {
+export default class BattleField extends React.Component<IBattleField, {}> {
 	constructor(props: IBattleField) {
 		super(props);
 
@@ -77,21 +73,3 @@ class BattleField extends React.Component<IBattleField, {}> {
 		});
 	}
 }
-
-const mapStateToProps = (state: IStoreState) => {
-	const { battleShip, clickedField } = state;
-	return {
-		battleShip,
-		clickedField,
-		coordinates: selectors.getCoordinates(battleShip),
-		coordinatesSank: selectors.getCoordinatesSank(battleShip)
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		actions: bindActionCreators(actions, dispatch)
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(BattleField);
