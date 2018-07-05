@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import * as actions from '../redux/actions';
 import * as selectors from '../redux/selectors';
 import { IBattleField, IbattleShip, IStoreState, } from '../types/index';
@@ -88,7 +88,7 @@ const mapStateToProps = (state: IStoreState) => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
 	return {
 		actions: bindActionCreators(actions, dispatch)
 	};
