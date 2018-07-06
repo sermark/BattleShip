@@ -6,9 +6,10 @@ import { IStoreState, } from '../types/index';
 
 
 const mapStateToProps = (state: IStoreState) => {
-	const { battleShip } = state;
+	const { battleShip, isVisible } = state;
 	return {
-		battleShip
+		battleShip,
+		isVisible
 	};
 };
 

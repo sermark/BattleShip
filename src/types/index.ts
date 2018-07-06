@@ -25,16 +25,13 @@ export interface IBattleField {
 export interface IStoreState {
 	battleShip: IbattleShip[];
 	clickedField: number[][];
+	isVisible: boolean;
 
 }
 
 export interface IMainProps {
 	battleShip: IbattleShip[];
 	actions: any
-}
-
-export interface IMainState {
-	isVisible: boolean;
 }
 
 export interface IMessageProps {

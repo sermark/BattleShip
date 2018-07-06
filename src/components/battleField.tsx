@@ -3,56 +3,11 @@ import { isItemInArray } from '../services/index';
 import { IBattleField, IbattleShip } from '../types/index';
 import Cell from './cell';
 
-export default class BattleField extends React.Component<IBattleField, {}> {
-	constructor(props: IBattleField) {
-		super(props);
+export const BattleField: React.SFC<IBattleField> = (props): JSX.Element => {
+	
+	const { actions, battleShip, coordinates, coordinatesSank, clickedField, isVisible } = props;
 
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	public render() {
-		const { coordinates, coordinatesSank, clickedField } = this.props;
-		const cells: JSX.Element[] = [];
-		for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-				let classes: string = "cell";
-
-				if (coordinates && isItemInArray(coordinates, [i, j])) {
-					if (this.props.isVisible) {
-						classes = classes + ' ship';
-					} else {
-						classes = classes;
-					}
-				}
-
-				if (clickedField && isItemInArray(clickedField, [i, j]) && coordinatesSank && !isItemInArray(coordinatesSank, [i, j])) {
-					classes = classes + ' missed';
-				}
-
-				if (coordinatesSank && isItemInArray(coordinatesSank, [i, j])) {
-					classes = classes + ' defeated';
-				}
-
-				cells.push(
-					<Cell
-						className={classes}
-						handleClick={this.handleClick}
-						key={i * 10 + j}
-						x={i}
-						y={j}
-					/>
-				)
-			}
-		}
-		return (
-			<ul className="battleField">
-				{cells}
-			</ul>
-		)
-	}
-
-	private handleClick(event: React.MouseEvent<{}>, x: number, y: number): void {
-		const { actions, battleShip } = this.props;
+	const handleClick = (event: React.MouseEvent<{}>, x: number, y: number): void => {
 		const cellCoordanate: number[] = [x, y];
 		actions.clickField(cellCoordanate);
 		const checkArea = (arr: number[], elem: IbattleShip): void => {
@@ -71,4 +26,39 @@ export default class BattleField extends React.Component<IBattleField, {}> {
 			})
 		});
 	}
+	
+	const cells: JSX.Element[] = [];
+	for (let i = 0; i < 10; i++) {
+		for (let j = 0; j < 10; j++) {
+			let classes: string = "cell";
+
+			if (coordinates && isItemInArray(coordinates, [i, j]) && isVisible) {
+				classes = classes + ' ship';
+			}
+
+			if (clickedField && isItemInArray(clickedField, [i, j]) && coordinatesSank && !isItemInArray(coordinatesSank, [i, j])) {
+				classes = classes + ' missed';
+			}
+
+			if (coordinatesSank && isItemInArray(coordinatesSank, [i, j])) {
+				classes = classes + ' defeated';
+			}
+
+			cells.push(
+				<Cell
+					className={classes}
+					handleClick={handleClick}
+					key={i * 10 + j}
+					x={i}
+					y={j}
+				/>
+			)
+		}
+	}
+
+	return (
+		<ul className="battleField">
+			{cells}
+		</ul>
+	)
 }
