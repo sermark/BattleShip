@@ -1,4 +1,4 @@
-import { combineReducers, Reducer } from 'redux';
+import { Action, combineReducers, Reducer } from 'redux';
 import { IAction, IActionClickedField, IbattleShip } from '../../types/index';
 import { actionTypes } from '../utils/constants';
 
@@ -31,9 +31,19 @@ const clickedField: Reducer<number[][]> = (state: number[][] = [], action: IActi
 	}
 };
 
+const isVisible: Reducer<boolean> = (state:boolean = false, action: Action<{}>) => {
+	switch (action.type) {
+		case actionTypes.SHOW_SHIPS:
+			return !state;
+		default:
+			return state;
+	}
+}
+
 const rootReducer = combineReducers({
 	battleShip,
-	clickedField
+	clickedField,
+	isVisible
 });
 
 export default rootReducer;

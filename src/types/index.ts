@@ -20,22 +20,18 @@ export interface IBattleField {
 	battleShip: IbattleShip[];
 	clickedField: number[][];
 	isVisible: boolean;
-	isItemInArray: (array: number[][], item: number[]) => boolean;
 }
 
 export interface IStoreState {
 	battleShip: IbattleShip[];
 	clickedField: number[][];
+	isVisible: boolean;
 
 }
 
 export interface IMainProps {
 	battleShip: IbattleShip[];
 	actions: any
-}
-
-export interface IMainState {
-	isVisible: boolean;
 }
 
 export interface IMessageProps {

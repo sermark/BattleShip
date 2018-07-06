@@ -22,3 +22,9 @@ export const clickField = (payload: IActionClickedField[]) => {
     type: actionTypes.CLICKED_FIELD,
   };
 };
+
+export const showShips = () => {
+	return {
+		type: actionTypes.SHOW_SHIPS
+	};
+};
