@@ -19,7 +19,7 @@ export default class Main extends React.Component<IMainProps, {}> {
 		return (
 			<>
 				<BattleField />
-				{isSankAll ? <Message text={'Game Over'} /> : null}
+				{isSankAll && <Message text={'Game Over'} />}
 				<button className={'button'} onClick={actions.showShips}>Toggle Visibility</button>
 			</>
 		)
